@@ -1,45 +1,64 @@
-# Smart Weather Station (PIC16F877A)
+# 🌤️ Smart Weather Station Project Using (PIC16F877A)
+# Group 26 CoE Mostafa Elnady,Mohamed Kahir , Sara Samadi 
+# 64190039,64190013,64190022
 
-A hardware-level environmental monitoring system built from scratch using a PIC16F877A microcontroller. This project is written entirely in bare-metal C using the Microchip XC8 compiler, avoiding high-level abstracted libraries to maintain full control over the hardware timing and memory management.
+![C](https://img.shields.io/badge/Language-C99-blue.svg)
+![Microcontroller](https://img.shields.io/badge/MCU-PIC16F877A-red.svg)
+![Compiler](https://img.shields.io/badge/Compiler-XC8_v3.10-orange.svg)
+![Status](https://img.shields.io/badge/Status-Fully_Operational-success.svg)
 
-## System Overview:
+> Our Project is real-time environmental monitoring system built from the scratch , Features I2C display , hardware RTC timekeeping, analog-to-digital sensor processing,data logging
 
-The station polls multiple environmental sensors, logs the data with precise timestamps to non-volatile memory, and streams the metrics live to both a local I2C display and a serial PC terminal.
+---
 
-### Core Capabilities
-* **Sensor Integration:** Processes digital pulse timing for a DHT22 (Humidity/Temp) and uses the internal 10-bit ADC to read an LM35 (Analog Temp) and LDR (Light Level).
-* **Hardware Timekeeping:** Communicates with a DS3231 Real-Time Clock over a 50kHz I2C bus.
-* **Persistent Data Logging:** Implements a circular buffer inside the DS3231's battery-backed SRAM. Sensor logs survive total power loss and system resets.
-* **Interrupt-Driven Timing:** Uses Timer1 interrupts for precision non-blocking interval timing (2.0-second execution loops) while keeping the main loop free.
-* **Serial Telemetry:** Dumps historical SRAM logs on boot and streams live telemetry via UART at 9600 baud.
+## ⚡ Project Features
 
-## Hardware Configuration
+* **Real-Time Environmental Tracking:**  humidity and temperature reading via (DHT22)
+* **Analog Light & Heat Sensing:** 10-bit ADC processing for ambient light levels (LDR) and secondary analog temperature cross-checking (LM35)
+* **Hardware Timekeeping:** Precision I2C communication with a DS3231 RTC module to timestamp all recorded events
+* **Non-Volatile Data Logging:** Implements a cooperative circular buffer utilizing the DS3231's internal SRAM to save historical telemetry data across power cycles.
+* **Live Telemetry Stream:** Streams live metrics out via UART (9600 Baud) to serial monitor
+* **Thermal Alert System:**  hardware interrupt/threshold system triggers a warning LED if temperatures exceed safe limits (23.0°C)
 
-**Microcontroller:** Microchip PIC16F877A (20MHz External Crystal)
-**Compiler:** XC8 v3.10 (C99 Standard)
-**Flasher:** PICkit 3
+---
 
-### Pinout Mapping
+## 🛠️ Hardware We used
 
-| Component | PIC16F877A Pin | Port / Function | Protocol / Type |
+### Components List
+* **Microcontroller:** Microchip PIC16F877A (@ 20MHz External Crystal)
+* **Display:** 16x2 Character LCD I2C
+* **Sensors:** DHT22 (Digital), LM35 (Analog), LDR (Analog)
+* **Clock:** DS3231 I2C Real-Time Clock
+
+### Pinout Mapping done on Protues and the Breadboard
+| Component | PIC16 Pin | Port / Function | Protocol / Type |
 | :--- | :--- | :--- | :--- |
-| **I2C SDA** | Pin 23 | RC4 | I2C Data Line (Requires 10k Pull-up) |
-| **I2C SCL** | Pin 18 | RC3 | I2C Clock Line (Requires 10k Pull-up) |
-| **DHT22** | Pin 19 | RD0 | Custom Digital Pulse (Requires 10k Pull-up) |
-| **LM35 Sensor** | Pin 3 | RA1 (AN1) | Analog Voltage Input |
-| **LDR Sensor** | Pin 4 | RA2 (AN2) | Analog Voltage Input |
-| **Alert LED** | Pin 39 | RB6 | Digital Output (Threshold: 30.0C) |
+| **I2C SDA** | Pin 23 | RC4 | I2C Data Line |
+| **I2C SCL** | Pin 18 | RC3 | I2C Clock Line |
+| **DHT22** | Pin 19 | RD0 | Custom Digital Pulse |
+| **LM35** | Pin 3 | RA1 (AN1) | Analog Voltage Input |
+| **LDR** | Pin 4 | RA2 (AN2) | Analog Voltage Input |
+| **Alert LED** | Pin 39 | RB6 | Digital Output |
 
-## Build and Deployment
 
-1. Clone this repository to your local machine.
-2. Open the project directory using MPLAB X IDE.
-3. Verify that your hardware matches the pinout table above. 
-4. Connect the PICkit 3 and select **Make and Program Device**.
-5. Connect a Serial Terminal (9600, 8, N, 1) to RC6/RC7 to monitor the boot sequence and live data stream.
 
-## Hardware Debugging Notes
+---
 
-During development, specific hardware behaviors were accounted for in the firmware:
-* **I2C Floating Bus Issue:** If the DS3231 RTC is disconnected or loses power, the I2C bus floats high (0xFF). The BCD-to-Decimal conversion will interpret this as `165`. If the screen displays `165:165:165`, the RTC physical connection is at fault.
-* **LCD Display Ghosting:** The `sprintf` formatting for the LCD requires explicit trailing space padding (e.g., `%-4u`) to prevent shorter strings from leaving artifact characters on the screen from previous polling cycles.
+## 💻 Software used
+
+* **IDE:** MPLAB X IDE (v6.20+)
+* **Compiler:** XC8 (v3.10) - Strict C99 Standard
+* **Flasher:** Microchip PICkit 3
+* **UART SERIALING:** Aurduino IDE
+
+
+### Serial Output
+
+
+```text
+# Smart Weather Station v3 (I2C LCD + DHT22 + DS3231)
+Last 8 saved samples:
+time,date,temp,hum,light,alert
+14:30:00,28/05/26,24.5,45,71,0
+14:30:02,28/05/26,24.5,45,72,0
+--- End of saved data ---
