@@ -1,5 +1,5 @@
 # 🌤️ Smart Weather Station Project Using (PIC16F877A)
-# Group 26 CoE Mostafa Elnady,Mohamed Kahir , Sara Samadi 
+# Group 26 CoE Mostafa Elnady,Mohamed Kahir,Sara Samadi 
 # 64190039,64190013,64190022
 
 ![C](https://img.shields.io/badge/Language-C99-blue.svg)
@@ -11,7 +11,7 @@
 
 ---
 
-## ⚡ Project Features
+##⚡Project Features⚡
 
 * **Real-Time Environmental Tracking:**  humidity and temperature reading via (DHT22)
 * **Analog Light & Heat Sensing:** 10-bit ADC processing for ambient light levels (LDR) and secondary analog temperature cross-checking (LM35)
@@ -22,7 +22,7 @@
 
 ---
 
-## 🛠️ Hardware We used
+## 🛠️ Hardware We used 🛠️
 
 ### Components List
 * **Microcontroller:** Microchip PIC16F877A (@ 20MHz External Crystal)
@@ -52,7 +52,7 @@
 * **UART SERIALING:** Aurduino IDE
 
 
-### Serial Output
+### Serial Output 💻
 
 
 ```text
